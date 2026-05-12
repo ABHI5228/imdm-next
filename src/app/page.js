@@ -25,10 +25,10 @@ export default async function Home({searchParams}) {
   }
 
   const results = (data.Search || []).map(item => ({
-    id: item.imdbID,
-    original_title: item.Title,
-    poster_path: item.Poster,
-    release_date: item.Year,
+    imdbID: item.imdbID,
+    Title: item.Title,
+    Poster: item.Poster,
+    Year: item.Year,
   }));
 
   return (

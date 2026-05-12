@@ -3,6 +3,8 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Navbar from "@/components/Navbar";
 import Provider from "@/app/Provider";
+import { getThemeScript } from '@teispace/next-themes/server';
+import { Suspense } from 'react';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,13 +28,26 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: getThemeScript({
+              attribute: 'class',
+              defaultTheme: 'system',
+              enableSystem: true,
+            }),
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <Provider>
-        <Header />
-        <Navbar />
-        {children}
+          <Header />
+          <Suspense fallback={<div className="p-4">Loading...</div>}>
+            <Navbar />
+          </Suspense>
+          {children}
         </Provider>
-        </body>
+      </body>
     </html>
   );
 }
