@@ -1,4 +1,5 @@
 import Results from "@/components/Results";
+import { resolve } from "styled-jsx/css";
 
 const API_KEY = process.env.API_KEY;
 
@@ -12,7 +13,11 @@ export default async function Home({searchParams}) {
     searchQuery = "action"; // Trending → Action (popular/blockbuster)
   }
 
-  const res = await fetch(`https://omdbapi.com/?apikey=${API_KEY}&s=${searchQuery}&type=movie&page=1`);
+  const res = await fetch(`https://omdbapi.com/?apikey=${API_KEY}&s=${searchQuery}&type=movie&page=1`,
+    { next: { revalidate: 10000 } }
+  );
+  
+  
   const data = await res.json();
 
   if (data.Response === "False") {
