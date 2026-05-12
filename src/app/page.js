@@ -12,7 +12,7 @@ export default async function Home({searchParams}) {
     searchQuery = "action"; // Trending → Action (popular/blockbuster)
   }
 
-  const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchQuery}&type=movie&page=1`);
+  const res = await fetch(`https://omdbapi.com/?apikey=${API_KEY}&s=${searchQuery}&type=movie&page=1`);
   const data = await res.json();
 
   if (data.Response === "False") {
