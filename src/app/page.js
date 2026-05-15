@@ -1,23 +1,27 @@
 import Results from "@/components/Results";
-import { resolve } from "styled-jsx/css";
 
 const API_KEY = process.env.API_KEY;
 
 export default async function Home({searchParams}) {
-  const genre = searchParams.genre || "movie";
-  let searchQuery = "movie";
+  const params = await searchParams;
+  const genre = params.genre || "movie";
+  const titleQuery = params.s;
+  let searchQuery = titleQuery || "movie";
 
-  if (genre === "fetchTopRated") {
-    searchQuery = "drama";  // Top-rated → Drama (award-winning films)
-  } else if (genre === "fetchTrending") {
-    searchQuery = "action"; // Trending → Action (popular/blockbuster)
+  if (!titleQuery) {
+    if (genre === "fetchTopRated") {
+      searchQuery = "drama";
+    } else if (genre === "fetchTrending") {
+      searchQuery = "action";
+    }
   }
 
-  const res = await fetch(`https://omdbapi.com/?apikey=${API_KEY}&s=${searchQuery}&type=movie&page=1`,
+  const res = await fetch(
+    `https://omdbapi.com/?apikey=${API_KEY}&s=${encodeURIComponent(searchQuery)}&type=movie&page=1`,
     { next: { revalidate: 10000 } }
   );
   
-  
+
   const data = await res.json();
 
   if (data.Response === "False") {

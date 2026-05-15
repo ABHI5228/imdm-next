@@ -1,18 +1,20 @@
-"use client"
+'use client';
 
-import { useTheme } from '@teispace/next-themes'
-import { useEffect, useState } from 'react'
+import { useTheme } from '@teispace/next-themes';
+import { useEffect, useState } from 'react';
 
 export default function DarkModeSwitch() {
-  const { resolvedTheme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    // This pattern is intentional to avoid hydration mismatch
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   if (!mounted) {
-    return <div className="w-8 h-8" />
+    return <div className="w-8 h-8" />;
   }
 
   return (
@@ -22,5 +24,5 @@ export default function DarkModeSwitch() {
     >
       {resolvedTheme === 'dark' ? '🌙' : '☀️'}
     </button>
-  )
+  );
 }
